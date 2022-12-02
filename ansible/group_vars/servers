@@ -1,0 +1,12 @@
+web_service_packages: 
+ - dhcp
+ - bind
+ - bind-utils
+ - httpd
+
+file_sharing_packages:
+ - samba 
+ - samba-client 
+ - nfs-utils
+
+apache-service: apache2

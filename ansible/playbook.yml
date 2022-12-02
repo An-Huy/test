@@ -1,0 +1,17 @@
+---
+
+- hosts: servers
+  become: true
+  
+  pre_tasks:
+  - name: update for repo for Redhat's family
+    tags: always
+    ansible.builtin.dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Centos"
+  
+  roles:
+   - {role: web_service, tags: ['web', 'all_services']}
+
+

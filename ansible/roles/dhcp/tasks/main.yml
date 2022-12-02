@@ -1,0 +1,8 @@
+- name: copy files for RHEL's family site
+  ansible.builtin.template:
+    src: ~/Ansible/roles/web_service/templates/dhcp.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution == "Centos"

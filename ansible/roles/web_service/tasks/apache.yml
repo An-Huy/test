@@ -1,0 +1,73 @@
+- name: install packages and config
+  ansible.builtin.yum:
+    name:
+      - httpd
+    state: latest
+
+- name: copy files for RHEL's family site
+  ansible.builtin.template:
+    src: ~/ansible/roles/web_service/templates/huynda.conf.j2
+    dest: /etc/httpd/conf.d/huynda.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution == "Centos"
+
+- name: copy files for RHEL's family site
+  ansible.builtin.template:
+    src: ~/ansible/roles/web_service/templates/hanoi.conf.j2
+    dest: /etc/httpd/conf.d/hanoi.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy files for RHEL's family site
+  ansible.builtin.template:
+    src: ~/ansible/roles/web_service/templates/huynda.conf.j2
+    dest: /etc/httpd/conf.d/mmt.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /var/www/{{ domain01 }}/html/
+    state: directory
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /var/www/{{ domain02 }}/html/
+    state: directory
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /var/www/{{ domain03 }}/html/
+    state: directory
+
+- name: copy folder for RHEL's family site
+  ansible.builtin.copy:
+    src: ~/ansible/roles/web_service/templates/index01.html.j2
+    dest: /var/www/{{ domain01 }}/html/index.html
+    owner: root
+    group: root
+
+- name: copy folder for RHEL's family site
+  ansible.builtin.copy:
+    src: ~/ansible/roles/web_service/templates/index02.html.j2
+    dest: /var/www/{{ domain02 }}/html/index02.html
+    owner: root
+    group: root
+
+- name: copy folder for RHEL's family site
+  ansible.builtin.copy:
+    src: ~/ansible/roles/web_service/templates/index03.html.j2
+    dest: /var/www/{{ domain03 }}/html/index03.html
+    owner: root
+    group: root
+
+- name: starts service, if not started
+  tags: always
+  ansible.builtin.service:
+    name: httpd 
+    state: started
+  when: ansible_distribution == "Centos"
